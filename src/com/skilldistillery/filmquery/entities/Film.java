@@ -1,5 +1,8 @@
 package com.skilldistillery.filmquery.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Film {
 	private int id;
 	private String title;
@@ -12,8 +15,9 @@ public class Film {
 	private double replacementCost;
 	private String rating;
 	private String specialFeatures;
+	private List<Actor> actors;
 	
-	public Film(int id, String title, String description, int releaseYear, int languageId, int rentalDuration, double rentalRate, int length, double replacementCost, String rating, String specialFeatures) {
+	public Film(int id, String title, String description, int releaseYear, int languageId, int rentalDuration, double rentalRate, int length, double replacementCost, String rating, String specialFeatures, List<Actor> actors) {
 		this.id = id;
 		this.title = title;
 		this.description = description;
@@ -25,6 +29,7 @@ public class Film {
 		this.replacementCost = replacementCost;
 		this.rating = rating;
 		this.specialFeatures = specialFeatures;
+		this.actors = actors;
 	}
 
 	public int getId() {
@@ -115,6 +120,15 @@ public class Film {
 		this.specialFeatures = specialFeatures;
 	}
 	
+	public List<Actor> getActors() {
+		return new ArrayList<Actor>(this.actors);
+	}
+
+	public void setActors(List<Actor> actors) {
+		List<Actor> updatedActors = new ArrayList<Actor>(actors);
+		this.actors = updatedActors;
+	}
+
 	@Override
 	public String toString() {
 		return this.title;

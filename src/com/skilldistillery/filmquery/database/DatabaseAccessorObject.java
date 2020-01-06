@@ -13,12 +13,6 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	private static final String user = "student";
 	private static final String pass = "student";
 
-	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-		DatabaseAccessorObject db = new DatabaseAccessorObject();
-		List<Actor> h = db.findActorsByFilmId(3);
-		System.out.println(h);
-	}
-
 	public DatabaseAccessorObject() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -45,7 +39,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				film = new Film(rst.getInt("film.id"), rst.getString("film.title"), rst.getString("film.description"),
 						rst.getInt("film.release_year"), rst.getInt("language_id"), rst.getInt("rental_duration"),
 						rst.getDouble("rental_rate"), rst.getInt("length"), rst.getDouble("replacement_cost"),
-						rst.getString("rating"), rst.getString("special_features"));
+						rst.getString("rating"), rst.getString("special_features"), findActorsByFilmId(filmId));
 			}
 
 		} catch (SQLException e) {
@@ -82,8 +76,9 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		try (Connection conn = DriverManager.getConnection(url, user, pass);
 				PreparedStatement stmt = preparedAndBindStatement(conn, filmId, sql);
 				ResultSet rst = stmt.executeQuery();) {
-			while(rst.next()) {
-				actor = new Actor(rst.getInt("actor.id"), rst.getString("actor.first_name"), rst.getString("actor.last_name"));
+			while (rst.next()) {
+				actor = new Actor(rst.getInt("actor.id"), rst.getString("actor.first_name"),
+						rst.getString("actor.last_name"));
 				actors.add(actor);
 			}
 
