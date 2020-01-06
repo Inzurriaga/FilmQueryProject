@@ -66,13 +66,18 @@ public class FilmQueryApp {
 	private void searchFilmById(Scanner input) {
 		int filmId = 0;
 		do {
-			System.out.print("Enter the film's id: ");
-			filmId = input.nextInt();
-			Film film = db.findFilmById(filmId);
-			if (film == null) {
-				System.out.println("Film not found");
-			} else {
-				displayFilm(film);
+			try {
+				System.out.print("Enter the film's id: ");
+				filmId = input.nextInt();
+				Film film = db.findFilmById(filmId);
+				if (film == null) {
+					System.out.println("Film not found");
+				} else {
+					displayFilm(film);
+				}
+			} catch (InputMismatchException e) {
+				System.err.println("invalid input please pick an option from the menu. \n");
+				input.next();
 			}
 		} while (filmId == 0);
 
