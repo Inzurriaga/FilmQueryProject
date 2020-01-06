@@ -67,7 +67,12 @@ public class FilmQueryApp {
 		do {
 			System.out.print("Enter the film's id: ");
 			filmId = input.nextInt();
-
+			Film film = db.findFilmById(filmId);
+			if (film == null) {
+				System.out.println("Film not found");
+			} else {
+				displayFilm(film);
+			}
 		} while (filmId != 0);
 
 	}
@@ -77,13 +82,18 @@ public class FilmQueryApp {
 		do {
 			System.out.print("Enter Keywords to find film: ");
 			keyword = input.next();
-
+			Film film = db.findFilmByKeyword(keyword);
+			if (film == null) {
+				System.out.println("Film not found");
+			} else {
+				displayFilm(film);
+			}
 		} while (keyword != null);
 
 	}
 
-	private void displayFilm() {
-
+	private void displayFilm(Film film) {
+		System.out.println("\nFilm title: " + film.getTitle() + "\nRelease date: " + film.getReleaseYear() + "\nRating: " + film.getRating() + "\nLanguage: " + film.getFilmLanguage()  +  "\nDescription: " + film.getDescription() + "\nActors: " + film.getActors() + "\n");
 	}
 
 }

@@ -16,8 +16,11 @@ public class Film {
 	private String rating;
 	private String specialFeatures;
 	private List<Actor> actors;
-	
-	public Film(int id, String title, String description, int releaseYear, int languageId, int rentalDuration, double rentalRate, int length, double replacementCost, String rating, String specialFeatures, List<Actor> actors) {
+	private String filmLanguage;
+
+	public Film(int id, String title, String description, int releaseYear, int languageId, int rentalDuration,
+			double rentalRate, int length, double replacementCost, String rating, String specialFeatures,
+			String filmLanguage, List<Actor> actors) {
 		this.id = id;
 		this.title = title;
 		this.description = description;
@@ -30,6 +33,7 @@ public class Film {
 		this.rating = rating;
 		this.specialFeatures = specialFeatures;
 		this.actors = actors;
+		this.filmLanguage = filmLanguage;
 	}
 
 	public int getId() {
@@ -119,7 +123,15 @@ public class Film {
 	public void setSpecialFeatures(String specialFeatures) {
 		this.specialFeatures = specialFeatures;
 	}
-	
+
+	public String getFilmLanguage() {
+		return filmLanguage;
+	}
+
+	public void setFilmLanguage(String filmLanguage) {
+		this.filmLanguage = filmLanguage;
+	}
+
 	public List<Actor> getActors() {
 		return new ArrayList<Actor>(this.actors);
 	}
@@ -133,5 +145,5 @@ public class Film {
 	public String toString() {
 		return this.title;
 	}
-	
+
 }
