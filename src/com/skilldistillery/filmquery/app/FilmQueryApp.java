@@ -1,6 +1,7 @@
 package com.skilldistillery.filmquery.app;
 
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 import com.skilldistillery.filmquery.database.DatabaseAccessor;
@@ -73,7 +74,7 @@ public class FilmQueryApp {
 			} else {
 				displayFilm(film);
 			}
-		} while (filmId != 0);
+		} while (filmId == 0);
 
 	}
 
@@ -82,13 +83,15 @@ public class FilmQueryApp {
 		do {
 			System.out.print("Enter Keywords to find film: ");
 			keyword = input.next();
-			Film film = db.findFilmByKeyword(keyword);
-			if (film == null) {
+			List<Film> films = db.findFilmByKeyword(keyword);
+			if (films.size() == 0) {
 				System.out.println("Film not found");
 			} else {
-				displayFilm(film);
+				for(Film film : films) {
+					displayFilm(film);
+				}
 			}
-		} while (keyword != null);
+		} while (keyword == null);
 
 	}
 

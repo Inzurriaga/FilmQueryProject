@@ -26,12 +26,13 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		stmt.setInt(1, id);
 		return stmt;
 	}
-	
-	private PreparedStatement preparedAndBindStatementByKeyword(Connection conn, String word, String sql) throws SQLException {
+
+	private PreparedStatement preparedAndBindStatementByKeyword(Connection conn, String word, String sql)
+			throws SQLException {
 		PreparedStatement stmt = conn.prepareStatement(sql);
-		
-		stmt.setString(1, "%" + word);
-		stmt.setString(2, "%" + word);
+
+		stmt.setString(1, "%" + word + "%");
+		stmt.setString(2, "%" + word + "%");
 		return stmt;
 	}
 
@@ -46,7 +47,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				film = new Film(rst.getInt("film.id"), rst.getString("film.title"), rst.getString("film.description"),
 						rst.getInt("film.release_year"), rst.getInt("language_id"), rst.getInt("rental_duration"),
 						rst.getDouble("rental_rate"), rst.getInt("length"), rst.getDouble("replacement_cost"),
-						rst.getString("rating"), rst.getString("special_features"),rst.getString("language.name"), findActorsByFilmId(filmId));
+						rst.getString("rating"), rst.getString("special_features"), rst.getString("language.name"),
+						findActorsByFilmId(filmId));
 			}
 
 		} catch (SQLException e) {
@@ -56,26 +58,29 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		return film;
 	}
 
-	// fix this fix this fix this fix this 
+	// fix this fix this fix this fix this
 	@Override
-	public Film findFilmByKeyword(String filmKeyword) {
+	public List<Film> findFilmByKeyword(String filmKeyword) {
+		List<Film> films = new ArrayList<Film>();
 		Film film = null;
 		String sql = "Select film.id, film.title,  film.description, film.release_year, film.language_id, film.rental_duration, film.rental_rate, film.length, film.replacement_cost, film.rating, film.special_features, language.name from film join language on film.language_id = language.id where film.title like ? or film.description like ?";
 		try (Connection conn = DriverManager.getConnection(url, user, pass);
 				PreparedStatement stmt = preparedAndBindStatementByKeyword(conn, filmKeyword, sql);
 				ResultSet rst = stmt.executeQuery();) {
-			if (rst.next()) {
+			while (rst.next()) {
 				film = new Film(rst.getInt("film.id"), rst.getString("film.title"), rst.getString("film.description"),
 						rst.getInt("film.release_year"), rst.getInt("language_id"), rst.getInt("rental_duration"),
 						rst.getDouble("rental_rate"), rst.getInt("length"), rst.getDouble("replacement_cost"),
-						rst.getString("rating"), rst.getString("special_features"), rst.getString("language.name"), findActorsByFilmId(rst.getInt("film.id")));
+						rst.getString("rating"), rst.getString("special_features"), rst.getString("language.name"),
+						findActorsByFilmId(rst.getInt("film.id")));
+				films.add(film);
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return film;
+		return films;
 	}
 
 	@Override
