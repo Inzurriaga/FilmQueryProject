@@ -47,10 +47,10 @@ public class FilmQueryApp {
 					case 3:
 						break;
 					default:
-						System.out.println("Please pick an option from the menu.");
+						System.err.println("Please pick an option from the menu.");
 				}
 			} catch (InputMismatchException e) {
-				System.err.println(e);
+				System.err.println("invalid input please pick an option from the menu. \n");
 				input.next();
 			}
 		} while (userInput != 3);
