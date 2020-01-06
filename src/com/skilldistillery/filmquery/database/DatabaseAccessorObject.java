@@ -14,7 +14,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		DatabaseAccessorObject db = new DatabaseAccessorObject();
-		Film h = db.findFilmById(3);
+		Actor h = db.findActorById(3);
 		System.out.println(h);
 	}
 
@@ -26,9 +26,9 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		}
 	}
 
-	private PreparedStatement preparedAndBindStatement(Connection conn, int filmId, String sql) throws SQLException {
+	private PreparedStatement preparedAndBindStatement(Connection conn, int id, String sql) throws SQLException {
 		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setInt(1, filmId);
+		stmt.setInt(1, id);
 		return stmt;
 	}
 
@@ -57,12 +57,12 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	@Override
 	public Actor findActorById(int actorId) {
 		Actor actor = null;
-		String sql = "";
+		String sql = "Select actor.id, actor.first_name, actor.last_name from actor where actor.id = ?";
 		try( Connection conn = DriverManager.getConnection(url, user, pass);
 				PreparedStatement stmt = preparedAndBindStatement(conn, actorId, sql);
 				ResultSet rst = stmt.executeQuery();) {
 			if(rst.next()) {
-				
+				actor = new Actor(rst.getInt("actor.id"), rst.getString("actor.first_name"), rst.getString("actor.last_name"));
 			}
 			
 		} catch (SQLException e) {
